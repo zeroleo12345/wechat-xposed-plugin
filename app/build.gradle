@@ -1,0 +1,270 @@
+apply plugin: 'com.android.application'
+
+static String join(String... paths)
+{
+    File file = new File(paths[0])
+    for (int i = 1; i < paths.length ; i++) {
+        file = new File(file, paths[i])
+    }
+    return file.getPath()
+}
+
+
+android {
+    flavorDimensions "default"
+    signingConfigs {
+        myconfig {
+            storeFile file(join("$project.rootDir", "..", "cert", "example.keystore.jks"))
+            storePassword "password"
+            keyAlias "key0"
+            keyPassword "password"
+        }
+    }
+
+    android {
+        lintOptions {
+            checkReleaseBuilds false
+            // Or, if you prefer, you can continue to check for errors in release builds,
+            // but continue the build even when errors are found:
+            abortOnError false
+        }
+    }
+
+    // note: https://stackoverflow.com/questions/36037041/how-to-set-variable-according-to-gradle-flavors
+//    productFlavors.all {
+//        ext.dTest = null
+//    }
+
+    // 编译多个apk
+    productFlavors {
+        taobaoke {
+            // 会自动生成 FLAVOR 指向大括号前面的字符串 taobaoke
+            applicationId "com.example.zlx.wechatmanager.taobaoke"
+            buildConfigField "long", "BUILD_TIMESTAMP", System.currentTimeMillis() + "L"
+            buildConfigField 'String', 'PROC_TYPE', '"service"'
+            buildConfigField 'String', 'TAG', '"zzzt"'
+            buildConfigField 'String', 'TAG2', '"zzzt2"'
+            buildConfigField 'boolean', 'cut', "true"
+            resValue "string", "app_name", "WxTaobaoke6510"  // 不能使用定义在strings.xml的 "@string/WechatMangerService"
+//            externalNativeBuild {
+//                cmake {
+//                    cFlags "-DMY_DEBUG=0", "-fvisibility=hidden"
+//                }
+//            }
+        }
+        service {
+            // 会自动生成 FLAVOR 指向大括号前面的字符串 service
+            applicationId "com.example.zlx.wechatmanager.service"
+            buildConfigField "long", "BUILD_TIMESTAMP", System.currentTimeMillis() + "L"
+            buildConfigField 'String', 'PROC_TYPE', '"service"'
+            buildConfigField 'String', 'TAG', '"zzzs"'
+            buildConfigField 'String', 'TAG2', '"zzzs2"'
+            buildConfigField 'boolean', 'cut', "true"
+            resValue "string", "app_name", "WxService667"  // 不能使用定义在strings.xml的 "@string/WechatMangerService"
+//            externalNativeBuild {
+//                cmake {
+//                    cFlags "-DMY_DEBUG=0", "-fvisibility=hidden"
+//                }
+//            }
+        }
+        door {
+            applicationId "com.example.zlx.wechatmanager.door"
+            buildConfigField "long", "BUILD_TIMESTAMP", System.currentTimeMillis() + "L"//
+            // buildConfigField "String", "BUILD_TIMESTAMP", new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+            buildConfigField 'String', 'PROC_TYPE', '"door"'
+            buildConfigField 'String', 'TAG', '"zzzd"'
+            buildConfigField 'String', 'TAG2', '"zzzd2"'
+            buildConfigField 'boolean', 'cut', "true"
+            resValue "string", "app_name", "WxDoor667"
+//            externalNativeBuild {
+//                cmake {
+//                    cFlags "-DMY_DEBUG=0", "-fvisibility=hidden"
+//                }
+//            }
+        }
+        manage {
+            applicationId "com.example.zlx.wechatmanager.manage"
+            buildConfigField "long", "BUILD_TIMESTAMP", System.currentTimeMillis() + "L"//
+            buildConfigField 'String', 'PROC_TYPE', '"manage"'
+            buildConfigField 'String', 'TAG', '"zzzm"'
+            buildConfigField 'String', 'TAG2', '"zzzm2"'
+            buildConfigField 'boolean', 'cut', "true"
+            resValue "string", "app_name", "WxManage667"
+//            externalNativeBuild {
+//                cmake {
+//                    cFlags "-DMY_DEBUG=0", "-fvisibility=hidden"
+//                }
+//            }
+        }
+    }
+
+    compileOptions {// note 新增
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    compileSdkVersion 25
+    buildToolsVersion '28.0.2'
+    defaultConfig {
+        applicationId "com.example.zlx.xposeapplication"
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+//        multiDexEnabled true
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles 'proguard-rules-release.pro' //  默认: proguardFiles getDefaultProguardFile('proguard-android.txt')
+            signingConfig signingConfigs.myconfig
+            buildConfigField 'String', 'BUILD_VARIANT', '"debug"'
+            buildConfigField 'String', 'LOG_LEVEL', '"debug"'
+        }
+        release {
+            minifyEnabled false
+            proguardFiles 'proguard-rules-release.pro' //  默认: proguardFiles getDefaultProguardFile('proguard-android.txt')
+            zipAlignEnabled true
+//            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.myconfig
+            pseudoLocalesEnabled true
+//            shrinkResources true    // 资源压缩, 参考: https://developer.android.com/studio/build/shrink-code.html
+            buildConfigField 'String', 'BUILD_VARIANT', '"release"'
+            buildConfigField 'String', 'LOG_LEVEL', '"release"'
+        }
+        outside {
+            minifyEnabled true
+            proguardFiles 'proguard-rules-outside.pro' //  默认: proguardFiles getDefaultProguardFile('proguard-android.txt')
+            zipAlignEnabled true
+//            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.myconfig
+            pseudoLocalesEnabled true
+//            shrinkResources true    // 资源压缩, 参考: https://developer.android.com/studio/build/shrink-code.html
+            buildConfigField 'String', 'BUILD_VARIANT', '"release"'
+            buildConfigField 'String', 'LOG_LEVEL', '"release"'
+        }
+
+        applicationVariants.all { variant ->
+            variant.outputs.all {
+                /**
+                *  door-667-debug.apk
+                *  door-667-release.apk
+                *  door-667-outside.apk
+                *
+                *  service-667-debug.apk
+                *  service-667-release.apk
+                *  service-667-outside.apk
+                *
+                *  manage-667-debug.apk
+                *  manage-667-release.apk
+                *  manage-667-outside.apk
+                *
+                *  taobaoke-667-debug.apk
+                *  taobaoke-667-release.apk
+                *  taobaoke-667-outside.apk
+                */
+                def weixin_version = "667"
+                def flavor = variant.productFlavors[0].name     // 如: door; service; outside;
+                def build_type = variant.buildType.name         // 如: debug; release; outside;
+                def apkName = flavor + "-" + weixin_version + "-" + build_type + ".apk"
+                //def fileName = "demo_${variant.productFlavors[0].name}-${defaultConfig.versionCode}-${defaultConfig.versionName}-${releaseTime() }.apk"
+
+                // note: 修改apk文件名, 样例如:
+                if (outputFileName.endsWith('.apk')) {
+                    System.setProperty(apkName, apkName)
+                    outputFileName = apkName
+                }
+
+                // note: 自定义 task
+                def current_assemble_task_name = "assemble" + flavor + build_type
+                for(String name: tasks.getNames()){
+                    if ( name.equalsIgnoreCase(current_assemble_task_name) ){
+                        tasks.getByName(name) {     // note;  << 和 it.doLast {} 效果一样, 而 << 在gradle 5.0版本后将废弃
+                            it.doLast {
+                                println "doLast. zlx task"
+
+                                if (build_type != "outside") {
+                                    return
+                                }
+
+                                // note AS2: /Users/zlx/myandroid/Xposed.667/app/build/outputs/apk/service-667-outside.apk
+                                //def apkPath = join("$project.buildDir", "outputs", "apk", apkName)
+                                // note AS3: /Users/zlx/myandroid/Xposed.667/app/build/outputs/apk/service/outside/service-667-outside.apk
+                                def apkPath = join("$project.buildDir", "outputs", "apk", flavor, build_type, apkName)
+                                def pyPath = join("$project.rootDir", "..", "shell", "autoEncryptString.py")
+                                def apktool = join("$project.rootDir", "..", "myhome", "apktool_2.2.2.jar")
+                                def cmd = String.format("python  %s  main --cert %s --storepass %s --storekey %s --keypass %s --apk %s --apktool %s --src JNIUtils.smali --package com.example.zlx.xposeapplication --key password --iv robot_wxid",
+                                        pyPath, android.signingConfigs.myconfig.storeFile, android.signingConfigs.myconfig.storePassword, android.signingConfigs.myconfig.keyAlias, android.signingConfigs.myconfig.keyPassword, apkPath, apktool)
+                                println "CMD: " + cmd
+                                println "OUTPUT: " + cmd.execute().text.trim().toString() //带返回值
+                            }
+                        }
+                        break
+                    }
+                }   // end for
+            }
+        }
+    }
+
+    // note: 当你添加了 dimensions 及 flavors 时，你可以移除无意义的 variants
+    variantFilter { variant ->
+        def names = variant.flavors*.name
+        if (names.contains("door") && variant.buildType.name == "outside") {
+            variant.ignore = true
+        }
+        //if (names.contains("service") && variant.buildType.name == "outside") {
+        //    variant.ignore = true
+        //}
+        if (names.contains("manage") && variant.buildType.name == "outside") {
+            variant.ignore = true
+        }
+    }
+
+    sourceSets {
+        main {
+            assets.srcDirs = ['src/main/assets', 'src/main/assets/']
+            jni.srcDirs = [] //disable automatic ndk-build
+            jniLibs.srcDirs = ['libs']  // note jniLibs是AndroidStudio默认的路径；如果要放到libs文件夹里，就需要配置了. 存放jar或so文件
+        }
+    }
+}   /** android 结束 */
+
+
+dependencies {
+    //implementation fileTree(dir: 'libs', include: ['commons-pool2-2.0.jar'])     // implementation 是指在编译的时候需要依赖，在运行的时候也需要
+    //implementation "org.apache.commons:commons-pool2:2.0"
+    compileOnly fileTree(include: ['XposedBridgeApi-54.jar'], dir: 'libs')     // compileOnly 是指编译的时候依赖这个jar包，但是最终打包的时候不打进去
+    //implementation 'redis.clients:jedis:2.9.0'
+    implementation 'com.rabbitmq:amqp-client:4.3.0'
+    //implementation 'com.elvishew:xlog:1.3.0' //note: XLog
+    //implementation 'commons-io:commons-io:2.5'//note: hardware
+//    implementation 'com.jcraft:jsch:0.1.54'    //note: sftp
+    //implementation group: 'redis.clients', name: 'jedis', version: '2.9.0'
+    //implementation "org.json:json:20160810"
+    //    testCompile 'junit:junit:4.12'
+//    implementation project(':library-release') //note: XLog
+    implementation 'com.zhy:percent-support-extends:1.1.1'
+
+//    implementation project(':mynative')
+
+//    debugImplementation project(path: ':mynative', configuration: 'debug')
+//    releaseImplementation project(path: ':mynative', configuration: 'release')
+//    outsideImplementation project(path: ':mynative', configuration: 'llvm')
+    implementation project(path: ':mynative')
+    implementation project(path: ':mybase')
+    // 编译 XLog
+    compileOnly 'commons-io:commons-io:2.5'  //note: hardware
+    compileOnly 'com.jcraft:jsch:0.1.54'    //note: sftp
+    compileOnly project(path: ':library-release') //note: XLog
+}
+
+
+afterEvaluate {
+    task ndkClean(type: Delete) {
+        // remove unused archs from build cache
+        delete fileTree('.externalNativeBuild') {
+            exclude android.defaultConfig.ndk.abiFilters.collect { '**/' + it }
+        }
+    }
+    tasks.findByPath(':clean').dependsOn ndkClean
+}

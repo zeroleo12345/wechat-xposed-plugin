@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- https://github.com/hongyangAndroid/android-percent-support-extend -->
+<com.zhy.android.percent.support.PercentFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <!-- note: Device ID 文本信息 !-->
+    <TextView
+        android:textIsSelectable="true"
+        android:text="当前设备ID:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_marginLeftPercent="2%w"
+        android:id="@+id/deviceId_tittle"
+        app:layout_marginTopPercent="0%h"
+        />
+    <TextView
+        android:textIsSelectable="true"
+        android:text="0x000000000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_marginLeftPercent="22%w"
+        android:id="@+id/deviceId"
+        app:layout_marginTopPercent="0%h"
+        />
+
+    <!-- note: 网关IP 文本信息 !-->
+    <TextView
+        android:textIsSelectable="true"
+        android:text="网关IP:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_marginLeftPercent="50%w"
+        android:id="@+id/gateway_title"
+        app:layout_marginTopPercent="0%h"
+        />
+    <TextView
+        android:id="@+id/gateway"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="100.100.100.100"
+        android:textIsSelectable="true"
+        app:layout_marginLeftPercent="64%w"
+        app:layout_marginTopPercent="0%h" />
+
+
+    <!-- note: Token 输入框 !-->
+    <TextView
+        android:textIsSelectable="true"
+        android:text="Token:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_marginLeftPercent="2%w"
+        android:id="@+id/token_tittle"
+        android:textSize="20sp"
+        android:textStyle="normal|bold"
+        app:layout_marginTopPercent="3%h"
+        />
+    <EditText
+        android:hint="请输入token"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:inputType="textPersonName"
+        android:id="@+id/token"
+
+        app:layout_widthPercent="94%w"
+        app:layout_marginLeftPercent="3%w"
+        android:textSize="16sp"
+        android:textStyle="normal|bold"
+        app:layout_heightPercent="6%h"
+        app:layout_marginTopPercent="8%h"
+        />
+
+
+    <!-- note: 认证按钮 !-->
+    <Button
+        android:text="认证"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        app:layout_heightPercent="8%h"
+        app:layout_widthPercent="90%w"
+        app:layout_marginLeftPercent="5%w"
+        android:id="@+id/authentic"
+        app:layout_marginTopPercent="13%h"
+        />
+
+
+    <!-- note: 认证返回码提示 !-->
+    <TextView
+        android:textIsSelectable="true"
+        android:text=""
+        android:textColor="@android:color/holo_red_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_marginLeftPercent="2%w"
+        android:id="@+id/tips"
+        app:layout_marginTopPercent="20%h"
+        />
+
+
+    <!-- note: RabbitMQ ip/port/user/password !-->
+    <TextView
+        android:textIsSelectable="true"
+        android:text="RabbitMQ:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_marginLeftPercent="2%w"
+        android:id="@+id/rabbitmq_info_tittle"
+        android:textSize="20sp"
+        android:textStyle="normal|bold"
+        app:layout_heightPercent="8%h"
+        app:layout_marginTopPercent="25%h"
+        />
+    <EditText
+        android:inputType="textMultiLine"
+        android:maxLines="4"
+        android:hint="ip/port/user/password "
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rabbitmq_info"
+
+        app:layout_widthPercent="94%w"
+        app:layout_marginLeftPercent="3%w"
+        android:textSize="15sp"
+        android:textStyle="normal|bold"
+        app:layout_heightPercent="18%h"
+        app:layout_marginTopPercent="28%h"
+        />
+
+
+    <!-- note: SFTP ip/port/user/password !-->
+    <TextView
+        android:textIsSelectable="true"
+        android:text="SFTP:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_marginLeftPercent="2%w"
+        android:id="@+id/sftp_info_tittle"
+        android:textSize="20sp"
+        android:textStyle="normal|bold"
+        app:layout_heightPercent="8%h"
+        app:layout_marginTopPercent="48%h"
+        />
+    <EditText
+        android:inputType="textMultiLine"
+        android:maxLines="3"
+        android:layout_height="wrap_content"
+        android:hint="ip/port/user/password "
+        android:layout_width="match_parent"
+        android:id="@+id/sftp_info"
+
+        app:layout_widthPercent="94%w"
+        app:layout_marginLeftPercent="3%w"
+        android:textSize="15sp"
+        android:textStyle="normal|bold"
+        app:layout_heightPercent="15%h"
+        app:layout_marginTopPercent="50%h"
+        />
+
+
+    <!-- note: Other ip/port/user/password !-->
+    <TextView
+        android:textIsSelectable="true"
+        android:text="其他:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_marginLeftPercent="2%w"
+        android:id="@+id/other_info_tittle"
+        android:textSize="20sp"
+        android:textStyle="normal|bold"
+        app:layout_heightPercent="8%h"
+        app:layout_marginTopPercent="68%h"
+        />
+    <EditText
+        android:inputType="textMultiLine"
+        android:maxLines="3"
+        android:layout_height="wrap_content"
+        android:hint="http_ip/http_port "
+        android:layout_width="match_parent"
+        android:id="@+id/other_info"
+
+        app:layout_widthPercent="94%w"
+        app:layout_marginLeftPercent="3%w"
+        android:textSize="15sp"
+        android:textStyle="normal|bold"
+        app:layout_heightPercent="15%h"
+        app:layout_marginTopPercent="70%h"
+        />
+
+
+    <!-- note: Debug I Packet !-->
+    <Button
+        android:text="I"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        app:layout_heightPercent="10%h"
+
+        app:layout_widthPercent="30%w"
+        app:layout_marginLeftPercent="5%w"
+        android:id="@+id/test_i"
+        app:layout_marginTopPercent="92%h"
+        />
+
+
+    <!-- note: Debug U Packet !-->
+    <Button
+        android:text="U"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        app:layout_heightPercent="10%h"
+        app:layout_widthPercent="30%w"
+        app:layout_marginLeftPercent="35%w"
+        android:id="@+id/test_u"
+        app:layout_marginTopPercent="92%h"
+        />
+
+
+    <!-- note: Debug 其他 Packet !-->
+    <Button
+        android:text="Other"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        app:layout_heightPercent="10%h"
+        app:layout_widthPercent="30%w"
+        app:layout_marginLeftPercent="65%w"
+        android:id="@+id/test_other"
+        app:layout_marginTopPercent="92%h"
+        />
+    <!-- <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="#ff7ecc16"
+        android:gravity="center"
+        android:text="margin 15% of w"
+        app:layout_marginPercent="15%w"
+        /> -->
+
+</com.zhy.android.percent.support.PercentFrameLayout>

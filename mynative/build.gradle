@@ -1,0 +1,122 @@
+apply plugin: 'com.android.library'
+
+android {
+    flavorDimensions "default"
+    publishNonDefault true
+    defaultPublishConfig 'release'
+    externalNativeBuild {
+        //note: 选择1  会使用 obfuscator 混淆native code
+        ndkBuild{
+            path file("src/cpp/Android.mk")  // 相对路径, 例如这里是app子项目, 则当前工作目录在app
+        }
+        //note: 选择2   没有混淆native code   ****不推荐使用 *****
+//        cmake {
+//            path "CMakeLists.txt"       // 相对路径, 例如这里是app子项目, 则当前工作目录在app
+//        }
+    }
+
+    compileSdkVersion 25
+    buildToolsVersion '28.0.2'
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        //ndk编译生成.so文件,
+        ndk {
+            moduleName "native-lib"         //生成的so名字
+            //abiFilters "armeabi", "armeabi-v7a", "x86"  //输出指定三种abi体系结构下的so库
+            abiFilters "armeabi-v7a"
+            ldLibs "log"
+        }
+        externalNativeBuild {
+            ndkBuild {
+            }
+            cmake {
+            }
+        }
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles 'proguard-rules.pro' //  默认: proguardFiles getDefaultProguardFile('proguard-android.txt')
+            buildConfigField "long", "BUILD_TIMESTAMP", System.currentTimeMillis() + "L"
+            buildConfigField 'String', 'PROC_TYPE', '"service"'
+            buildConfigField 'String', 'TAG', '"zzz"'
+            buildConfigField 'String', 'TAG2', '"zzz2"'
+            buildConfigField 'boolean', 'cut', "true"
+            externalNativeBuild {
+                ndkBuild {
+                    arguments 'NDK_TOOLCHAIN_VERSION=clang'   //'NDK_TOOLCHAIN_VERSION=clang-ollvm4.0', 'APP_STL=gnustl_static', 'APP_PLATFORM=android-14',
+                    cFlags "-DMY_DEBUG=1"
+                    cppFlags "-DMY_DEBUG=1"
+                }
+                cmake {
+                    cFlags "-DMY_DEBUG=1"
+                    cppFlags "-DMY_DEBUG=1"
+                }
+            }
+        }
+        release {
+            minifyEnabled false
+            proguardFiles 'proguard-rules-release.pro' //  默认: proguardFiles getDefaultProguardFile('proguard-android.txt')
+            zipAlignEnabled true
+            signingConfig signingConfigs.debug
+            pseudoLocalesEnabled true
+//            shrinkResources true    // 资源压缩, 参考: https://developer.android.com/studio/build/shrink-code.html
+            buildConfigField 'String', 'PROC_TYPE', '"service"'
+            buildConfigField 'String', 'TAG', '"zzz"'
+            buildConfigField 'String', 'TAG2', '"zzz2"'
+            buildConfigField 'boolean', 'cut', "true"
+            externalNativeBuild {
+                ndkBuild {
+                    arguments 'NDK_TOOLCHAIN_VERSION=clang'   //'NDK_TOOLCHAIN_VERSION=clang-ollvm4.0', 'APP_STL=gnustl_static', 'APP_PLATFORM=android-14',
+                    cFlags "-DMY_DEBUG=0"
+                    cppFlags "-DMY_DEBUG=0"
+                }
+                cmake {
+                    cFlags "-DMY_DEBUG=0"
+                    cppFlags "-DMY_DEBUG=0"
+                }
+            }
+        }
+//        outside {
+            //指定匹配失败匹配其他变体
+//            matchingFallbacks = ['llvm']
+//        }
+        outside {
+            //note: 使用 llvm 编译
+            minifyEnabled false
+            proguardFiles 'proguard-rules-release.pro' //  默认: proguardFiles getDefaultProguardFile('proguard-android.txt')
+            zipAlignEnabled true
+            signingConfig signingConfigs.debug
+            pseudoLocalesEnabled true
+//            shrinkResources true    // 资源压缩, 参考: https://developer.android.com/studio/build/shrink-code.html
+            buildConfigField 'String', 'PROC_TYPE', '"service"'
+            buildConfigField 'String', 'TAG', '"zzz"'
+            buildConfigField 'String', 'TAG2', '"zzz2"'
+            buildConfigField 'boolean', 'cut', "true"
+            externalNativeBuild {
+                ndkBuild {
+                    arguments 'NDK_TOOLCHAIN_VERSION=clang-ollvm4.0', 'OUTSIDE=1'   //'NDK_TOOLCHAIN_VERSION=clang-ollvm4.0', 'APP_STL=gnustl_static', 'APP_PLATFORM=android-14',
+                    cFlags "-DMY_DEBUG=0"//, "-mllvm -sub",  "-mllvm -fla",  "-mllvm -bcf"
+                    cppFlags "-DMY_DEBUG=0"
+                }
+                cmake {
+                    cFlags "-DMY_DEBUG=0"
+                    cppFlags "-DMY_DEBUG=0"
+                }
+            }
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //implementation 'com.android.support:appcompat-v7:25.3.1'
+}

@@ -1,0 +1,54 @@
+apply plugin: 'com.android.library'
+
+android {
+    flavorDimensions "default"
+    publishNonDefault true
+    defaultPublishConfig 'release'
+    compileSdkVersion 25
+    buildToolsVersion '28.0.2'
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        outside {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+            java {
+                // note: 不编译指定class文件  compile group: 'commons-net', name: 'commons-net', version: '3.3'
+                exclude '**/FTPUtils.java'
+            }
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+}
+
+dependencies {
+    compileOnly fileTree(include: ['XposedBridgeApi-54.jar'], dir: 'libs')
+    implementation 'commons-io:commons-io:2.5'
+    //note: hardware
+    implementation 'com.jcraft:jsch:0.1.54'
+    //note: sftp
+    implementation project(path: ':library-release')
+    //note: XLog
+}
