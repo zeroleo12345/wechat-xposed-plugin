@@ -1,5 +1,5 @@
-## xchat-xposed-plugin
-某聊天软件 6.6.7 xposed插件
+## wechat-xposed-plugin
+6.6.7 xposed插件
 
 
 ## NDK 和 SDK 配置
